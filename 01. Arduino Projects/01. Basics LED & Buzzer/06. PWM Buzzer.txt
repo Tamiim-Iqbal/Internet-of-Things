@@ -1,0 +1,20 @@
+const int ledPin1 = 11; 
+
+void setup() {
+  pinMode(ledPin1, OUTPUT);
+}
+
+void loop() {
+  analogWrite(ledPin1, 0);
+  delay(200);
+  analogWrite(ledPin1, 50);
+  delay(200);
+  analogWrite(ledPin1, 100);
+  delay(200);
+  analogWrite(ledPin1, 150);
+  delay(200);
+  analogWrite(ledPin1, 200);
+  delay(200);
+  analogWrite(ledPin1, 250);
+  delay(500);
+}
