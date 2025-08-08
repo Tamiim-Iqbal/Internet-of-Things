@@ -1,0 +1,14 @@
+const int ledPin = 7;
+
+void setup() {
+  // put your setup code here, to run once:
+  pinMode(ledPin, OUTPUT);
+  digitalWrite(ledPin, HIGH);
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+
+}
+
+// Digital Circuit : https://www.tinkercad.com/things/8Y74Bdd3B2E/editel?returnTo=%2Fdashboard
