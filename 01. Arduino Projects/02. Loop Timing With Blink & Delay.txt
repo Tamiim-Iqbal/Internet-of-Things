@@ -8,7 +8,9 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
     digitalWrite(ledPin, HIGH);
+    delay(1000);
+    digitalWrite(ledPin, LOW);
+    delay(1000);
 }
 
-
-// Digital Circuit : https://www.tinkercad.com/things/8Y74Bdd3B2E/editel?returnTo=%2Fdashboard
+// Digital Circuit : https://www.tinkercad.com/things/l7Hadvp2H34/editel
