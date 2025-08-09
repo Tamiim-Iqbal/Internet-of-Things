@@ -1,0 +1,44 @@
+String message = "";
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(2, OUTPUT);
+  pinMode(3, OUTPUT);
+  pinMode(4, OUTPUT);
+  pinMode(5, OUTPUT);
+  pinMode(6, OUTPUT);
+}
+
+void loop() {
+
+  if(Serial.available())
+  {
+    message = Serial.readStringUntil("\n");
+    message.trim();
+    
+    if(message.equalsIgnoreCase("2"))
+    {
+      digitalWrite(2, HIGH);
+    }
+    else if(message.equalsIgnoreCase("3"))
+    {
+      digitalWrite(3, HIGH);
+    }
+    else if(message.equalsIgnoreCase("4"))
+    {
+      digitalWrite(4, HIGH);
+    }
+    else if(message.equalsIgnoreCase("5"))
+    {
+      digitalWrite(5, HIGH);
+    }
+    else if(message.equalsIgnoreCase("6"))
+    {
+      digitalWrite(6, HIGH);
+    }
+   
+    Serial.print("\nArduino Response : ");
+    Serial.print(message);
+  }
+}
+

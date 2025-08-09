@@ -1,0 +1,48 @@
+int ledPin = 2;
+String message = "";
+bool playLED = false;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(2, OUTPUT);
+  pinMode(3, OUTPUT);
+  pinMode(4, OUTPUT);
+  pinMode(5, OUTPUT);
+  pinMode(6, OUTPUT);
+}
+
+void loop() {
+
+  if(Serial.available())
+  {
+    message = Serial.readStringUntil("\n");
+    message.trim();
+    
+    if(message.equalsIgnoreCase("on"))
+    {
+      playLED = true;
+    }
+    else if(message.equalsIgnoreCase("off"))
+    {
+      playLED = false;
+    }
+    
+    Serial.print("Arduino Response : ");
+    Serial.println(message);
+  }
+
+  if(playLED)
+  {
+    digitalWrite(ledPin, HIGH);
+    delay(200);
+    digitalWrite(ledPin, LOW);
+    delay(200);
+
+    ledPin++;
+
+    if(ledPin > 7)
+    {
+      ledPin = 2;
+    }
+  }
+}

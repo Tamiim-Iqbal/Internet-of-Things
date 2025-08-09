@@ -1,0 +1,26 @@
+#define buttonPin 8
+#define ledPin 7
+int count = 0;
+void setup() {
+  Serial.begin(9600);
+  pinMode(buttonPin, INPUT_PULLUP);
+  pinMode(ledPin, OUTPUT);
+
+}
+
+void loop() {
+  int pinState = digitalRead(buttonPin);
+
+  if(pinState == LOW)
+  {
+    count++;
+    delay(1000);
+    
+    if(count == 3)
+    {
+      digitalWrite(ledPin, HIGH);
+      count = 0;
+    }
+  }
+  
+}
