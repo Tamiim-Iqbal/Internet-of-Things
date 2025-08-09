@@ -1,0 +1,70 @@
+#define MQ A0
+long previousTime = 0;
+long currentTime = 0;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(MQ, INPUT);
+  pinMode(3, OUTPUT);
+  pinMode(4, OUTPUT);
+  pinMode(5, OUTPUT);
+  pinMode(6, OUTPUT);
+  pinMode(7, OUTPUT);
+  pinMode(8, OUTPUT);
+  pinMode(9, OUTPUT);
+
+}
+
+void loop() {
+  int MQvalue = analogRead(MQ);
+  Serial.println(MQvalue);
+
+  if(MQvalue >= 180)
+  {
+    currentTime = millis();
+    if(currentTime - previousTime >= 50)
+    {
+      previousTime = currentTime;
+      for (int pin = 3; pin <= 5; pin++)
+      {
+        int state = digitalRead(pin);
+        digitalWrite(pin, !state);
+      }
+
+      int state9 = digitalRead(9);
+      digitalWrite(9, !state9);
+
+      for (int pin = 6; pin <= 8; pin++)
+      {
+        digitalWrite(pin, LOW);
+      }
+    }
+  }
+
+  else if(MQvalue >= 70)
+  {
+    currentTime = millis();
+    if(currentTime - previousTime >= 500)
+    {
+      previousTime = currentTime;
+      for (int pin = 6; pin <= 9; pin++)
+      {
+        int state = digitalRead(pin);
+        digitalWrite(pin, !state);
+      }
+
+      for (int pin = 3; pin <= 5; pin++)
+      {
+        digitalWrite(pin, LOW);
+      }
+    }
+  }
+
+  else
+  {
+    for (int pin = 3; pin <= 9; pin++)
+    {
+      digitalWrite(pin, LOW);
+    }
+  }
+}
