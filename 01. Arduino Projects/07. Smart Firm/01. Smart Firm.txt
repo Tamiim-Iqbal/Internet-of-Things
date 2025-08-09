@@ -1,0 +1,43 @@
+#include "DHT.h"
+DHT myDht(8, DHT11);
+
+void setup() {
+  Serial.begin(9600);
+  myDht.begin();
+  delay(2000);
+
+  pinMode(3, OUTPUT);
+  pinMode(4, OUTPUT);
+  pinMode(5, OUTPUT);
+  pinMode(6, OUTPUT);
+}
+
+void loop() {
+  float hmdt = myDht.readHumidity();
+  float temp = myDht.readTemperature();
+  Serial.print("Humidity : ");
+  Serial.print(hmdt);
+  Serial.print("  Temperature : ");
+  Serial.println(temp);
+
+  if(temp < 32)
+  {
+    for(int pin = 3; pin <= 6; pin++)
+    {
+      digitalWrite(pin, HIGH);
+    }
+  }
+  else
+  {
+    for(int pin = 3; pin <= 6; pin++)
+    {
+      digitalWrite(pin, LOW);
+    }
+  }
+
+
+  delay(1000);
+
+
+  
+}
