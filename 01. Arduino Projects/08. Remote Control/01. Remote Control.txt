@@ -1,0 +1,59 @@
+
+#include "IRremote.h"
+#define irPin 8
+
+long previousTime = 0;
+long currentTime = 0;
+bool blinkMode = false; // NEW - blinking mode flag
+
+void setup() {
+  Serial.begin(9600);
+  IrReceiver.begin(irPin, ENABLE_LED_FEEDBACK);
+
+  for (int pin = 4; pin <= 7; pin++) {
+    pinMode(pin, OUTPUT);
+  }
+}
+
+void loop() {
+  // IR remote handling
+  if (IrReceiver.decode()) {
+    unsigned long code = IrReceiver.decodedIRData.decodedRawData;
+    Serial.println(code);
+
+    if (code == 4261481998) {
+      digitalWrite(7, !digitalRead(7));
+    }
+    else if (code == 4244770318) {
+      digitalWrite(6, !digitalRead(6));
+    }
+    else if (code == 4228058638) {
+      digitalWrite(5, !digitalRead(5));
+    }
+    else if (code == 4211346958) {
+      digitalWrite(4, !digitalRead(4));
+    }
+    else if (code == 4060941838) {
+      blinkMode = !blinkMode; // Toggle blinking mode
+    }
+    else if (code == 4077653518) {
+      blinkMode = false; // Stop blinking
+      for (int pin = 4; pin <= 7; pin++) {
+        digitalWrite(pin, LOW);
+      }
+    }
+
+    IrReceiver.resume();
+  }
+
+  // Blinking logic (runs independently of IR input)
+  if (blinkMode) {
+    currentTime = millis();
+    if (currentTime - previousTime >= 100) {
+      previousTime = currentTime;
+      for (int pin = 4; pin <= 7; pin++) {
+        digitalWrite(pin, !digitalRead(pin));
+      }
+    }
+  }
+}
