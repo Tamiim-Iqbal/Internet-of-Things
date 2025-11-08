@@ -1,0 +1,32 @@
+long prevTime = 0;
+long curTime = 0;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(10, OUTPUT);
+  pinMode(A0, INPUT);
+  
+
+}
+
+void loop() {
+  int waterLevel = analogRead(A0);
+  Serial.println(waterLevel);
+
+  if (waterLevel >= 200)
+  {
+    digitalWrite(10, LOW);
+    prevTime = millis();
+  }
+  else 
+  {
+    curTime = millis();
+    if(curTime - prevTime >= 15000)
+    {
+      digitalWrite(10, HIGH);
+    }
+    
+  }
+
+  delay(500);
+}
