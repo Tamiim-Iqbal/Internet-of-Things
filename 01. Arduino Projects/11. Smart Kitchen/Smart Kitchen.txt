@@ -1,0 +1,131 @@
+#include <Servo.h>
+
+// smart bin
+Servo myServo; 
+long exc_time = 0;
+long cur_time = 0;
+
+// water tank
+long prevTime = 0;
+long curTime = 0;
+
+// kitchen
+long previousTime = 0;
+long currentTime = 0;
+
+void setup() {
+  // smart bin
+  Serial.begin(9600);
+  myServo.attach(10);      // pwm digital pin
+  pinMode(A0, INPUT);
+
+  // water tank
+  pinMode(11, OUTPUT);
+  pinMode(A1, INPUT);
+
+  // kitchen
+  pinMode(A5, INPUT);
+  pinMode(3, OUTPUT);
+  pinMode(4, OUTPUT);
+  pinMode(5, OUTPUT);
+  pinMode(6, OUTPUT);
+  pinMode(7, OUTPUT);
+  pinMode(8, OUTPUT);
+  pinMode(9, OUTPUT);
+  
+}
+
+void loop() {
+  // smart bin ---------------------------------------------------------
+  int irValue = analogRead(A0);
+  Serial.print("ir : ");
+  Serial.println(irValue);
+
+  if(irValue < 100)
+  {
+    myServo.write(180);
+    exc_time = millis();
+
+  }
+  else
+  {
+    cur_time = millis();
+    if(cur_time - exc_time >= 1500)
+    {
+      myServo.write(0);
+    }
+  }
+
+  // water tank -----------------------------------------------------------
+  int waterLevel = analogRead(A1);
+  Serial.print("water : ");
+  Serial.println(waterLevel);
+
+  if (waterLevel >= 200)
+  {
+    digitalWrite(11, LOW);
+    prevTime = millis();
+  }
+  else 
+  {
+    curTime = millis();
+    if(curTime - prevTime >= 15000)
+    {
+      digitalWrite(11, HIGH);
+    }
+  }
+
+  // kitchen ---------------------------------------------
+  int MQvalue = analogRead(A5);
+  Serial.print("MQ : ");
+  Serial.println(MQvalue);
+
+  if(MQvalue >= 180)
+  {
+    currentTime = millis();
+    if(currentTime - previousTime >= 50)
+    {
+      previousTime = currentTime;
+      for (int pin = 3; pin <= 4; pin++)
+      {
+        int state = digitalRead(pin);
+        digitalWrite(pin, !state);
+      }
+
+      int state7 = digitalRead(7);
+      digitalWrite(7, !state7);
+
+      for (int pin = 5; pin <= 6; pin++)
+      {
+        digitalWrite(pin, LOW);
+      }
+    }
+  }
+
+  else if(MQvalue >= 80)
+  {
+    currentTime = millis();
+    if(currentTime - previousTime >= 500)
+    {
+      previousTime = currentTime;
+      for (int pin = 5; pin <= 7; pin++)
+      {
+        int state = digitalRead(pin);
+        digitalWrite(pin, !state);
+      }
+
+      for (int pin = 3; pin <= 4; pin++)
+      {
+        digitalWrite(pin, LOW);
+      }
+    }
+  }
+
+  else
+  {
+    for (int pin = 3; pin <= 7; pin++)
+    {
+      digitalWrite(pin, LOW);
+    }
+  }
+}
